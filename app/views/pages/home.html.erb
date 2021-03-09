@@ -1,0 +1,22 @@
+<% if user_signed_in? %>
+  <h1 style="text-align: center;"><%= current_user.email %></h1>
+<% end %>
+
+<div class="container" style="width: 500px; margin: 5vh auto 0 auto;">
+  <%= form_for Promo.new, method: :post do |f| %>
+    <%= f.label :t_minutes, 'Nombre de minutes' %>
+    <%= f.text_field :t_minutes %>
+    <%= f.submit "créer promo" %>
+  <% end -%>
+
+  <h3>Liste des promos de l'utilisateur courant</h3>
+
+  <ul>
+    <% @promos.each do |promo| %>
+      <li>
+        <p>crée à : <%= promo.created_at %> pour <%= promo.t_minutes %>min | actif : <%= promo.active %></p>
+      </li>
+    <% end %>
+  </ul>
+
+</div>

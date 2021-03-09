@@ -1,0 +1,47 @@
+<% if cookies[:promo] %>
+  <p id="promo_timer"></p>
+
+  <style>
+    #promo_timer {
+      position: fixed;
+      top: 2vh;
+      left: 2vw;
+      z-index: 9999;
+      padding: 0.5vh 1.7vw;
+      background: rgba(100, 100, 100, 0.5);
+      border-radius: 5px;
+      font-size: 1.9rem;
+    }
+
+    .red_bckgrnd {
+      background: rgba(170, 40, 50, 0.5) !important;
+    }
+    .xtra_red_bckgrnd {
+      background: rgba(255, 0, 0, 0.5) !important;
+    }
+  </style>
+
+  <script>
+    if (document.querySelector('#promo_timer')) {
+      var countDownDate = new Date('<%= cookies[:promo] %>');
+      var x = setInterval(function() {
+        var now = new Date().getTime();
+        var distance = countDownDate - now;
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toLocaleString('en-US', { minimumIntegerDigits: 2 });
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000).toLocaleString('en-US', { minimumIntegerDigits: 2 });
+        if (minutes == 0 && seconds <= 10) {
+          document.getElementById("promo_timer").classList.toggle('xtra_red_bckgrnd');
+        } else if (minutes == 0 && seconds <= 60) {
+          document.getElementById("promo_timer").classList.toggle('red_bckgrnd');
+        }
+        document.getElementById("promo_timer").innerHTML = `${minutes}:${seconds}`;
+        if (distance < 0) {
+          clearInterval(x);
+          document.getElementById("promo_timer").innerHTML = "Terminé";
+          // document.location.reload(true);
+        };
+      }, 1000);
+    };
+  </script>
+
+<% end %>
